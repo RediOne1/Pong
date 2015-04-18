@@ -16,24 +16,20 @@ public class GameState {
     public static int screenWidth = 300;
     public static int screenHeight = 420;
 
-    final static int LEFT = 1;
-    final static int RIGHT = 2;
-
     //The ball
-    final int ballSize = 10;
+    final int ballSize = 20;
     int ballX = screenWidth / 2;
     int ballY = screenHeight / 2;
-    private int ballVelocityX = 3;
-    private int ballVelocityY = 3;
+    private int ballVelocityX = 4;
+    private int ballVelocityY = 4;
 
     //The bats
-    private static final int batLength = 75;
+    private static final int batLength = 150;
     private static final int batHeight = 10;
-    private static int topBatX = (screenWidth / 2) - (batLength / 2);
+    public static int topBatX = (screenWidth / 2) - (batLength / 2);
     private static int topBatY = 20;
-    private static int bottomBatX = (screenWidth / 2) - (batLength / 2);
+    public static int bottomBatX = (screenWidth / 2) - (batLength / 2);
     private static int bottomBatY = screenHeight - 20;
-    private static final int batSpeed = 30;
 
     public GameState() {
     }
@@ -66,20 +62,6 @@ public class GameState {
         if (ballX > bottomBatX && ballX < bottomBatX + batLength
                 && ballY > bottomBatY)
             ballVelocityY *= -1;
-    }
-
-    public static void keyPressed(int direction) {
-        if (direction == LEFT) //left
-        {
-            topBatX += batSpeed;
-            bottomBatX -= batSpeed;
-        }
-
-        if (direction == RIGHT) //right
-        {
-            topBatX -= batSpeed;
-            bottomBatX += batSpeed;
-        }
     }
 
     //the draw method

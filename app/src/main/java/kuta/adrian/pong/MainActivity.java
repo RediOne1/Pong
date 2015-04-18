@@ -1,38 +1,52 @@
 package kuta.adrian.pong;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnTouchListener {
-
-
-    private Button left, right;
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        left = (Button) findViewById(R.id.left);
-        right = (Button) findViewById(R.id.right);
-        left.setOnTouchListener(this);
-        right.setOnTouchListener(this);
     }
 
+    private int topBat = -1;
+    private int bottomBat = -1;
+
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (v == left) {
-                GameState.keyPressed(GameState.LEFT);
-            } else if (v == right) {
-                GameState.keyPressed(GameState.RIGHT);
-            }
-            return true;
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = MotionEventCompat.getActionMasked(event);
+        int index = MotionEventCompat.getActionIndex(event);
+        int yPos;
+
+        if (action == MotionEvent.ACTION_UP) {
+            topBat = -1;
+            bottomBat = -1;
         }
-        return false;
+        if (event.getPointerCount() > 1) {
+            yPos = (int) MotionEventCompat.getY(event, 0);
+            if (topBat == -1 || bottomBat == -1) {
+                if (yPos < GameState.screenHeight / 2)
+                    topBat = 0;
+                else
+                    topBat = 1;
+                bottomBat = (topBat + 1) % 2;
+            }
+            GameState.topBatX = (int) MotionEventCompat.getX(event, topBat);
+            GameState.bottomBatX = (int) MotionEventCompat.getX(event, bottomBat);
+
+        } else {
+            yPos = (int) MotionEventCompat.getY(event, index);
+            if (yPos < GameState.screenHeight / 2)
+                GameState.topBatX = (int) MotionEventCompat.getX(event, index);
+            else
+                GameState.bottomBatX = (int) MotionEventCompat.getX(event, index);
+        }
+
+        return super.onTouchEvent(event);
     }
 }
