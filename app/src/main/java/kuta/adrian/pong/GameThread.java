@@ -13,9 +13,6 @@ import android.view.SurfaceHolder;
  */
 public class GameThread extends Thread {
 
-    /**
-     * Handle to the surface manager object we interact with
-     */
     private SurfaceHolder surfaceHolder;
     private Paint paint;
     private GameState gameState;
